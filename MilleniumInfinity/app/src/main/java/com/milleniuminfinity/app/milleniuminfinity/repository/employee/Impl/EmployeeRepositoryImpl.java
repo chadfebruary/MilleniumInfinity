@@ -57,7 +57,7 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
     @Override
     public Employee findById(String employeeID, String role)
     {
-        SQLiteDatabase database = this.getReadableDatabase();
+        database = this.getReadableDatabase();
         Cursor cursor = database.query(
                 TABLE_EMPLOYEE,
                 new String[]{
@@ -166,7 +166,7 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
     @Override
     public Set<Employee> findAll() throws Exception
     {
-        SQLiteDatabase database = this.getReadableDatabase();
+        database = this.getReadableDatabase();
         String selectAll = " SELECT * FROM " + TABLE_EMPLOYEE;
         Set<Employee> employees = new HashSet<>();
         open();

@@ -1,7 +1,252 @@
 package com.milleniuminfinity.app.milleniuminfinity.repository.internet.Impl;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.test.AndroidTestCase;
+import android.util.Log;
+
+import com.milleniuminfinity.app.milleniuminfinity.conf.databases.DBConstants;
+import com.milleniuminfinity.app.milleniuminfinity.domain.internet.ADSL;
+import com.milleniuminfinity.app.milleniuminfinity.domain.internet.Fibre;
+import com.milleniuminfinity.app.milleniuminfinity.domain.internet.Internet;
+import com.milleniuminfinity.app.milleniuminfinity.domain.internet.Mobile;
+import com.milleniuminfinity.app.milleniuminfinity.repository.internet.InternetRepository;
+
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by cfebruary on 2016/08/22.
  */
-public class InternetRepositoryImpl {
+public class InternetRepositoryImpl extends SQLiteOpenHelper implements InternetRepository{
+
+    public static final String TABLE_INTERNET = "internet";
+    private SQLiteDatabase database;
+
+    private static final String COLUMN_IPADDRESS = "ipaddress";
+    private static final String COLUMN_ISP = "isp";
+    private static final String COLUMN_PLANNAME = "planname";
+    private static final String COLUMN_PRICE = "price";
+    private static final String COLUMN_DATAALLOWANCE = "dataallowance";
+    private static final String COLUMN_TYPE = "type";
+
+    //Database table creation
+    private static final String DATABASE_CREATE = " CREATE TABLE"
+            + TABLE_INTERNET + "("
+            + COLUMN_IPADDRESS + " TEXT PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_ISP + " TEXT NOT NULL,"
+            + COLUMN_PLANNAME + " TEXT NOT NULL,"
+            + COLUMN_PRICE + " TEXT NOT NULL,"
+            + COLUMN_DATAALLOWANCE + " TEXT NOT NULL,"
+            + COLUMN_TYPE + " TEXT NOT NULL);";
+
+    public InternetRepositoryImpl(Context context)
+    {
+        super(context, DBConstants.DATABASE_NAME, null, DBConstants.DATABASE_VERSION);
+    }
+
+    public void open()
+    {
+        database = this.getWritableDatabase();
+    }
+
+    public void close()
+    {
+        this.close();
+    }
+
+    @Override
+    public Internet findById(String ipAddress, String type)
+    {
+        database =  this.getReadableDatabase();
+        Cursor cursor = database.query(
+                TABLE_INTERNET,
+                new String[]{
+                        COLUMN_IPADDRESS,
+                        COLUMN_ISP,
+                        COLUMN_PLANNAME,
+                        COLUMN_PRICE,
+                        COLUMN_DATAALLOWANCE,
+                        COLUMN_TYPE
+                },
+                COLUMN_IPADDRESS + " =? ",
+                new String[]{String.valueOf(ipAddress)},
+                null,
+                null,
+                null,
+                null);
+
+        if(cursor.moveToFirst())
+        {
+            if(type.equalsIgnoreCase("ADSL")){
+                final Internet internet = new ADSL.Builder()
+                        .ipAddress(cursor.getString(0))
+                        .ISP(cursor.getString(1))
+                        .planName(cursor.getString(2))
+                        .price(cursor.getString(3))
+                        .dataAllowance(cursor.getString(4))
+                        .type(cursor.getString(5))
+                        .build();
+
+                return internet;
+            }
+            else if(type.equalsIgnoreCase("Fibre")){
+                final Internet internet = new Fibre.Builder()
+                        .ipAddress(cursor.getString(0))
+                        .ISP(cursor.getString(1))
+                        .planName(cursor.getString(2))
+                        .price(cursor.getString(3))
+                        .dataAllowance(cursor.getString(4))
+                        .type(cursor.getString(5))
+                        .build();
+
+                return internet;
+            }
+            else{
+                final Internet internet = new Mobile.Builder()
+                        .ipAddress(cursor.getString(0))
+                        .ISP(cursor.getString(1))
+                        .planName(cursor.getString(2))
+                        .price(cursor.getString(3))
+                        .dataAllowance(cursor.getString(4))
+                        .type(cursor.getString(5))
+                        .build();
+
+                return internet;
+            }
+
+        }
+        else {
+            return null;
+        }
+    }
+
+    @Override
+    public Internet save(Internet internet) throws Exception {
+        open();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_IPADDRESS, internet.getIPAddress());
+        values.put(COLUMN_ISP, internet.getISP());
+        values.put(COLUMN_PLANNAME, internet.getPlanName());
+        values.put(COLUMN_PRICE, internet.getPrice());
+        values.put(COLUMN_DATAALLOWANCE, internet.getDataAllowance());
+        values.put(COLUMN_TYPE, internet.getType());
+
+        Long ipAddress = database.insertOrThrow(TABLE_INTERNET, null, values);
+
+        Internet insertedEntity = internet;
+
+        return insertedEntity;
+    }
+
+    @Override
+    public Internet update(Internet internet) throws Exception {
+        open();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_IPADDRESS, internet.getIPAddress());
+        values.put(COLUMN_ISP, internet.getISP());
+        values.put(COLUMN_PLANNAME, internet.getPlanName());
+        values.put(COLUMN_PRICE, internet.getPrice());
+        values.put(COLUMN_DATAALLOWANCE, internet.getDataAllowance());
+        values.put(COLUMN_TYPE, internet.getType());
+        database.update(
+                TABLE_INTERNET,
+                values,
+                COLUMN_IPADDRESS + " =? ",
+                new String[]{String.valueOf(internet.getIPAddress())}
+        );
+
+        return internet;
+    }
+
+    @Override
+    public Internet delete(Internet internet) throws Exception {
+        open();
+        database.delete(
+                TABLE_INTERNET,
+                COLUMN_IPADDRESS + " =? ",
+                new String[]{String.valueOf(internet.getIPAddress())}
+        );
+
+        return internet;
+    }
+
+    @Override
+    public int deleteAll() throws Exception {
+        open();
+        int rowsDeleted = database.delete(TABLE_INTERNET, null, null);
+        close();
+        return rowsDeleted;
+    }
+
+    @Override
+    public Set<Internet> findAll() throws Exception {
+        database = this.getReadableDatabase();
+        String selectAll = " SELECT * FROM " + TABLE_INTERNET;
+        Set<Internet>internetServices = new HashSet<>();
+        open();
+        Cursor cursor = database.rawQuery(selectAll, null);
+
+        if(cursor.moveToFirst())
+        {
+            do{
+                final Internet internet;
+
+                if(cursor.getString(5).equalsIgnoreCase("ADSL")){
+                    internet = new ADSL.Builder()
+                            .ipAddress(cursor.getString(0))
+                            .ISP(cursor.getString(1))
+                            .planName(cursor.getString(2))
+                            .price(cursor.getString(3))
+                            .dataAllowance(cursor.getString(4))
+                            .type(cursor.getString(5))
+                            .build();
+                }
+                else if(cursor.getString(5).equalsIgnoreCase("Fibre")){
+                    internet = new Fibre.Builder()
+                            .ipAddress(cursor.getString(0))
+                            .ISP(cursor.getString(1))
+                            .planName(cursor.getString(2))
+                            .price(cursor.getString(3))
+                            .dataAllowance(cursor.getString(4))
+                            .type(cursor.getString(5))
+                            .build();
+                }
+                else{
+                    internet = new Mobile.Builder()
+                            .ipAddress(cursor.getString(0))
+                            .ISP(cursor.getString(1))
+                            .planName(cursor.getString(2))
+                            .price(cursor.getString(3))
+                            .dataAllowance(cursor.getString(4))
+                            .type(cursor.getString(5))
+                            .build();
+                }
+
+                internetServices.add(internet);
+
+            }while (cursor.moveToNext());
+        }
+
+        return internetServices;
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        database.execSQL(DATABASE_CREATE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.w(this.getClass().getName(),
+                "Upgrading database from version " + oldVersion + " to "
+                        + newVersion + ", which will destroy all old data");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_INTERNET);
+        onCreate(db);
+    }
 }

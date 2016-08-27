@@ -17,6 +17,7 @@ public class Cleaner implements Serializable, Employee{
         this.surname = builder.surname;
         this.dateOfBirth = builder.dateOfBirth;
         this.employeeID = builder.employeeID;
+        this.role = builder.role;
     }
 
     @Override
@@ -41,6 +42,12 @@ public class Cleaner implements Serializable, Employee{
     public String getEmployeeID()
     {
         return employeeID;
+    }
+
+    @Override
+    public String getEmployeeRole()
+    {
+        return role;
     }
 
     public static class Builder
@@ -86,6 +93,7 @@ public class Cleaner implements Serializable, Employee{
             this.surname = value.getSurname();
             this.dateOfBirth = value.getDateOfBirth();
             this.employeeID = value.getEmployeeID();
+            this.role = value.getEmployeeRole();
 
             return this;
         }
@@ -113,11 +121,5 @@ public class Cleaner implements Serializable, Employee{
     public int hashCode()
     {
         return employeeID != null ? employeeID.hashCode() : 0;
-    }
-
-    @Override
-    public String getEmployeeRole()
-    {
-        return role;
     }
 }

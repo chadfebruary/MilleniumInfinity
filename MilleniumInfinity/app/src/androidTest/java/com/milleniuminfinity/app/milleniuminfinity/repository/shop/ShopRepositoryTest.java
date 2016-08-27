@@ -2,6 +2,12 @@ package com.milleniuminfinity.app.milleniuminfinity.repository.shop;
 
 import android.test.AndroidTestCase;
 
+import com.milleniuminfinity.app.milleniuminfinity.domain.shop.Shop;
+import com.milleniuminfinity.app.milleniuminfinity.repository.shop.Impl.ShopRepositoryImpl;
+
+import junit.framework.Assert;
+
+import java.util.Set;
 
 
 /**
@@ -13,7 +19,7 @@ import android.test.AndroidTestCase;
 
 public class ShopRepositoryTest extends AndroidTestCase
 {
-   /* public static final String TAG = "SHOP TEST";
+    public static final String TAG = "SHOP TEST";
 
     public void createReadUpdateDeleteTest() throws Exception
     {
@@ -37,7 +43,7 @@ public class ShopRepositoryTest extends AndroidTestCase
         Assert.assertNotNull(TAG + " READ ALL", shops.size() > 0);
 
         //Read entity
-        Shop shop = repository.findById(shopNumber);
+        Shop shop = repository.findById(createdShop.getShopNumber(), createdShop.getShopName());
         Assert.assertNotNull(TAG + " READ SHOP", shop);
 
         //Update shop
@@ -47,12 +53,12 @@ public class ShopRepositoryTest extends AndroidTestCase
                 .build();
 
         repository.update(updateShop);
-        Shop newShop = repository.findById(shopNumber);
+        Shop newShop = repository.findById(updateShop.getShopNumber(), updateShop.getShopName());
         Assert.assertEquals(TAG + " UPDATE SHOP", "NewShopNumber", newShop.getShopNumber());
 
         //Delete shop
         repository.delete(updateShop);
-        Shop deletedShop = repository.findById(shopNumber);
+        Shop deletedShop = repository.findById(updateShop.getShopNumber(), updateShop.getShopName());
         Assert.assertNull(TAG + " DELETE", deletedShop);
-    }*/
+    }
 }

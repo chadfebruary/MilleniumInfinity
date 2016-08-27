@@ -75,7 +75,7 @@ public class Shop {
         {
             return new Shop(this);
         }
-        
+
         public static Builder builder()
         {
             return new Builder();
