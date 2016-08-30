@@ -6,14 +6,14 @@ import java.lang.String;
 /**
  * Created by 208023429 on 4/14/2016.
  */
-public class Manager implements Serializable, Employee{
+public class Manager implements Employee, Serializable{
 
     private String name, surname;
     private String dateOfBirth;
     private String employeeID;
-    String role = "Manager";
+    private String role = "Manager";
 
-    public Manager(Builder builder)
+    private Manager(Builder builder)
     {
         this.name = builder.name;
         this.surname = builder.surname;
@@ -54,9 +54,11 @@ public class Manager implements Serializable, Employee{
     public static class Builder
     {
         private String name, surname;
-        String dateOfBirth;
-        String employeeID;
-        String role;
+        private String dateOfBirth;
+        private String employeeID;
+        private String role;
+
+        public Builder(){}
 
         public Builder employeeID(String value)
         {

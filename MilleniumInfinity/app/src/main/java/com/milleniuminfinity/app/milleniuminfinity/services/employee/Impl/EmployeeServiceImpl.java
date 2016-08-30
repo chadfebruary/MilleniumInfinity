@@ -63,7 +63,11 @@ public class EmployeeServiceImpl extends IntentService implements EmployeeServic
 
             if (ACTION_ADD.equals(action)) {
                 final Employee employee = (Employee) intent.getSerializableExtra(EXTRA_ADD);
-                postEmp(employee);
+                try {
+                    postEmp(employee);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else if (ACTION_UPDATE.equals(action)) {
                 final Employee employee = (Employee) intent.getSerializableExtra(EXTRA_UPDATE);
                 updateEmp(employee);
@@ -85,21 +89,13 @@ public class EmployeeServiceImpl extends IntentService implements EmployeeServic
         }
     }
 
-    private void postEmp(Employee employee)
-    {
+    private void postEmp(Employee employee) throws Exception {
         //Post and Save local
-        try
-        {
             EmployeeRepository employeeRepository = new EmployeeRepositoryImpl(getBaseContext());
             employeeRepository.save(employee);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 
-    private void deleteAll()
+    public void deleteAll()
     {
         EmployeeRepository employeeRepository = new EmployeeRepositoryImpl(getBaseContext());
 

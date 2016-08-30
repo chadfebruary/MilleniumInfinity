@@ -1,4 +1,4 @@
-package com.milleniuminfinity.app.milleniuminfinity;
+package com.milleniuminfinity.app.milleniuminfinity.activity.employee;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.milleniuminfinity.app.milleniuminfinity.R;
+import com.milleniuminfinity.app.milleniuminfinity.activity.MainActivity;
 import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Employee;
 import com.milleniuminfinity.app.milleniuminfinity.factories.employee.ManagerFactory;
 

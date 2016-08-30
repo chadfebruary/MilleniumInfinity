@@ -28,7 +28,7 @@ public class ShopRepositoryImpl extends SQLiteOpenHelper implements ShopReposito
     public static final String COLUMN_SHOPPHONENUMBER = "shopphonenumber";
 
     //Database table creation
-    private static final String DATABASE_CREATE = " CREATE TABLE "
+    private static final String DATABASE_CREATE = " CREATE TABLE IF NOT EXISTS "
             + TABLE_SHOP + "("
             + COLUMN_SHOPNUMBER + " TEXT PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_SHOPNAME + " TEXT NOT NULL,"

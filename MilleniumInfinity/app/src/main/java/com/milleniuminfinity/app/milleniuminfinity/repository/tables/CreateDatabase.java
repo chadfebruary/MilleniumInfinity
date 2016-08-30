@@ -49,14 +49,14 @@ public class CreateDatabase extends SQLiteOpenHelper {
     public static final String COLUMN_DATAALLOWANCE = "dataAllowance";
 
     //Internet table creation
-    private static final String CREATE_TABLE_INTERNET = " CREATE TABLE " +
+    private static final String CREATE_TABLE_INTERNET = " CREATE TABLE IF NOT EXISTS " +
             TABLE_INTERNET + " (" +
-            COLUMN_IPADDRESS + "INTEGER PRIMARY KEY, " +
+            COLUMN_IPADDRESS + " TEXT PRIMARY KEY, " +
             //COLUMN_SHOPNUMBER + " INTEGER FOREIGN KEY REFERENCES shop(ShopNumber), " +
-            COLUMN_ISP + "TEXT NOT NULL, " +
-            COLUMN_PLANNAME + "TEXT NOT NULL, " +
-            COLUMN_PRICE + "INTEGER NOT NULL, " +
-            COLUMN_DATAALLOWANCE + "INTEGER NOT NULL );";
+            COLUMN_ISP + " TEXT NOT NULL, " +
+            COLUMN_PLANNAME + " TEXT NOT NULL, " +
+            COLUMN_PRICE + " TEXT NOT NULL, " +
+            COLUMN_DATAALLOWANCE + " TEXT NOT NULL );";
 
     //Shop table columns
     public static final String COLUMN_SHOPNUMBER = "shopNumber";
@@ -65,12 +65,12 @@ public class CreateDatabase extends SQLiteOpenHelper {
     public static final String COLUMN_SHOPPHONENUMBER = "shopPhoneNumber";
 
     //Shop table creation
-    /*private static final String CREATE_TABLE_SHOP = " CREATE TABLE " +
-            TABLE_SHOP + " ( " +
+    private static final String CREATE_TABLE_SHOP = " CREATE TABLE IF NOT EXISTS " +
+            TABLE_SHOP + "(" +
             COLUMN_SHOPNUMBER + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_SHOPNAME + " TEXT NOT NULL, " +
             COLUMN_SHOPOWNER + " TEXT NOT NULL, " +
-            COLUMN_SHOPNUMBER + " TEXT NOT NULL);";*/
+            COLUMN_SHOPPHONENUMBER + " TEXT NOT NULL);";
 
     public CreateDatabase(Context context)
     {
@@ -101,7 +101,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
 
     public void createAllTables(){
 
-        //database.execSQL(CREATE_TABLE_SHOP);
+        database.execSQL(CREATE_TABLE_SHOP);
         database.execSQL(CREATE_TABLE_EMPLOYEE);
         database.execSQL(CREATE_TABLE_INTERNET);
     }
@@ -110,7 +110,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
 
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_INTERNET);
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_EMPLOYEE);
-        //database.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOP);
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOP);
 
         createDatabase = null;
     }

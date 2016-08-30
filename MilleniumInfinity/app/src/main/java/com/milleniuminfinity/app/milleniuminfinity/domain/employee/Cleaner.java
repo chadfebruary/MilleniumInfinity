@@ -9,9 +9,9 @@ public class Cleaner implements Serializable, Employee{
     private String name, surname;
     private String dateOfBirth;
     private String employeeID;
-    String role = "Cleaner";
+    private String role = "Cleaner";
 
-    public Cleaner(Builder builder)
+    private Cleaner(Builder builder)
     {
         this.name = builder.name;
         this.surname = builder.surname;
@@ -53,9 +53,9 @@ public class Cleaner implements Serializable, Employee{
     public static class Builder
     {
         private String name, surname;
-        String dateOfBirth;
-        String employeeID;
-        String role;
+        private String dateOfBirth;
+        private String employeeID;
+        private String role;
 
         public Builder employeeID(String value)
         {

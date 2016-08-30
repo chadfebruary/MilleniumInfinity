@@ -34,7 +34,7 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
     private static final String COLUMN_TYPE = "type";
 
     //Database table creation
-    private static final String DATABASE_CREATE = " CREATE TABLE"
+    private static final String DATABASE_CREATE = " CREATE TABLE IF NOT EXISTS "
             + TABLE_INTERNET + "("
             + COLUMN_IPADDRESS + " TEXT PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_ISP + " TEXT NOT NULL,"

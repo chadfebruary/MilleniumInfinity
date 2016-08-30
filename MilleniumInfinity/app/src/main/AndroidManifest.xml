@@ -8,16 +8,21 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddEmployee" />
-        <activity android:name=".PreviewEmployee" />
-        <activity android:name=".ViewEmployee"></activity>
+        <activity android:name=".activity.employee.AddEmployee" />
+        <activity android:name=".activity.employee.PreviewEmployee" />
+        <activity android:name=".activity.employee.ViewEmployee" />
+        <activity android:name=".activity.employee.EmployeeMenu" />
+        <activity android:name=".activity.internet.InternetMenu" />
+        <activity android:name=".activity.internet.AddInternet" />
+        <activity android:name=".activity.internet.PreviewInternet" />
+        <activity android:name=".activity.internet.ViewInternet"></activity>
     </application>
 
 </manifest>

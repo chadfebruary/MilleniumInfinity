@@ -10,9 +10,9 @@ public class SalesRepresentative implements Serializable, Employee{
     private String name, surname;
     private String dateOfBirth;
     private String employeeID;
-    String role = "Sales representative";
+    private String role = "Sales representative";
 
-    public SalesRepresentative(Builder builder)
+    private SalesRepresentative(Builder builder)
     {
         this.name = builder.name;
         this.surname = builder.surname;
@@ -54,9 +54,9 @@ public class SalesRepresentative implements Serializable, Employee{
     public static class Builder
     {
         private String name, surname;
-        String dateOfBirth;
-        String employeeID;
-        String role;
+        private String dateOfBirth;
+        private String employeeID;
+        private String role;
 
         public Builder employeeID(String value)
         {

@@ -3,6 +3,7 @@ package com.milleniuminfinity.app.milleniuminfinity.repository.employee.Impl;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -14,7 +15,6 @@ import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Manager;
 import com.milleniuminfinity.app.milleniuminfinity.domain.employee.SalesRepresentative;
 import com.milleniuminfinity.app.milleniuminfinity.repository.employee.EmployeeRepository;
 
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,11 +32,11 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
     public static final String COLUMN_DATEOFBIRTH = "dateofbirth";
 
     //Database table creation
-    private static final String DATABASE_CREATE = " CREATE TABLE "
+    private static final String DATABASE_CREATE = " CREATE TABLE IF NOT EXISTS "
             + TABLE_EMPLOYEE + "("
-            + COLUMN_EMPLOYEEID + " TEXT PRIMARY KEY AUTOINCREMENT, "
-            + COLUMN_NAME + " TEXT NOT NULL, "
-            + COLUMN_SURNAME + " TEXT NOT NULL, "
+            + COLUMN_EMPLOYEEID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_NAME + " TEXT NOT NULL,"
+            + COLUMN_SURNAME + " TEXT NOT NULL,"
             + COLUMN_DATEOFBIRTH + "TEXT NOT NULL);";
 
     public EmployeeRepositoryImpl(Context context)
@@ -57,7 +57,7 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
     @Override
     public Employee findById(String employeeID, String role)
     {
-        database = this.getReadableDatabase();
+        SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.query(
                 TABLE_EMPLOYEE,
                 new String[]{
@@ -113,7 +113,7 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
     }
 
     @Override
-    public Employee save(Employee employee) throws Exception
+    public Employee save(Employee employee)
     {
         open();
         ContentValues values = new ContentValues();
@@ -125,13 +125,35 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
 
         Long employeeID = database.insertOrThrow(TABLE_EMPLOYEE, null, values);
 
-        Employee insertedEntity = employee;
+        if(employee.getEmployeeRole().equalsIgnoreCase("Manager")) {
+            final Employee insertedEntity = new Manager.Builder()
+                    .copy((Manager)employee)
+                    .employeeID(employeeID.toString())
+                    .build();
+            return insertedEntity;
+        }
+        else if(employee.getEmployeeRole().equalsIgnoreCase("Sales representative"))
+        {
+            final Employee insertedEntity = new SalesRepresentative.Builder()
+                    .copy((SalesRepresentative)employee)
+                    .employeeID(employeeID.toString())
+                    .build();
 
-        return insertedEntity;
+            return insertedEntity;
+        }
+        else
+        {
+            final Employee insertedEntity = new Cleaner.Builder()
+                    .copy((Cleaner)employee)
+                    .employeeID(employeeID.toString())
+                    .build();
+
+            return insertedEntity;
+        }
     }
 
     @Override
-    public Employee update(Employee employee) throws Exception
+    public Employee update(Employee employee)
     {
         open();
         ContentValues values = new ContentValues();
@@ -151,7 +173,7 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
     }
 
     @Override
-    public Employee delete(Employee employee) throws Exception
+    public Employee delete(Employee employee)
     {
         open();
         database.delete(
@@ -164,7 +186,7 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
     }
 
     @Override
-    public Set<Employee> findAll() throws Exception
+    public Set<Employee> findAll()
     {
         database = this.getReadableDatabase();
         String selectAll = " SELECT * FROM " + TABLE_EMPLOYEE;
@@ -214,11 +236,11 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
     }
 
     @Override
-    public int deleteAll() throws Exception
+    public int deleteAll()
     {
         open();
         int rowsDeleted = database.delete(TABLE_EMPLOYEE, null, null);
-        close();
+        //close();
         return rowsDeleted;
     }
 

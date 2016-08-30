@@ -7,35 +7,35 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.employee.EmployeeMenu">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Employees"
-        android:onClick="employeeMenu"
-        android:id="@+id/btnEmployees"
+        android:text="Add employee"
+        android:id="@+id/btnAddEmployee"
+        android:onClick="addEmployee"
+        android:layout_marginTop="40dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Internet services"
-        android:onClick="internetMenu"
-        android:id="@+id/btnInternetServices"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:layout_below="@+id/btnEmployees" />
+        android:text="View employees"
+        android:id="@+id/btnViewEmployees"
+        android:onClick="viewEmployees"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/btnAddEmployee"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Shops"
-        android:onClick="viewAll"
-        android:id="@+id/btnShops"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:layout_below="@+id/btnInternetServices" />
+        android:text="Delete employee"
+        android:id="@+id/btnDeleteEmployee"
+        android:onClick="deleteEmployees"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/btnViewEmployees"
+        android:layout_alignStart="@+id/btnViewEmployees" />
 </RelativeLayout>

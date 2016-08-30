@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MilleniumInfinity</string>
+    <string name="title_activity_employee_menu">EmployeeMenu</string>
 </resources>
