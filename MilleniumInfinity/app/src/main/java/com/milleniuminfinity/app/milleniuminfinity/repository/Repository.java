@@ -8,9 +8,9 @@ import java.util.Set;
 public interface Repository <Entity, Identity> {
 
     Entity findById(Identity identity1, Identity identity2);
-    Entity save(Entity entity) throws Exception;
-    Entity update(Entity entity) throws Exception;
-    Entity delete (Entity entity) throws Exception;
-    int deleteAll() throws Exception;
-    Set<Entity> findAll() throws Exception;
+    Entity save(Entity entity);
+    Entity update(Entity entity);
+    Entity delete (Entity entity);
+    int deleteAll();
+    Set<Entity> findAll();
 }

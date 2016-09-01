@@ -6,7 +6,6 @@ package com.milleniuminfinity.app.milleniuminfinity.repository.internet;
  */
 import android.test.AndroidTestCase;
 
-import com.milleniuminfinity.app.milleniuminfinity.domain.internet.ADSL;
 import com.milleniuminfinity.app.milleniuminfinity.domain.internet.Internet;
 import com.milleniuminfinity.app.milleniuminfinity.repository.internet.Impl.InternetRepositoryImpl;
 
@@ -25,7 +24,7 @@ public class InternetRepositoryTest extends AndroidTestCase
         String ipAddress;
         
         //Create
-        Internet createdInternet = new ADSL.Builder()
+        Internet createdInternet = new Internet.Builder()
                                             .ipAddress("10.1.1.1")
                                             .ISP("Telkom")
                                             .planName("Capped ADSL")
@@ -47,8 +46,8 @@ public class InternetRepositoryTest extends AndroidTestCase
         Assert.assertNotNull(TAG + " READ INTERNET", internet);
         
         //Update internet
-        Internet updateInternet = new ADSL.Builder()
-                                            .copy((ADSL)internet)
+        Internet updateInternet = new Internet.Builder()
+                                            .copy(internet)
                                             .ipAddress("NewIP")
                                             .build();
         repository.update(updateInternet);

@@ -3,16 +3,14 @@ package com.milleniuminfinity.app.milleniuminfinity.repository.employee.Impl;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseErrorHandler;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.milleniuminfinity.app.milleniuminfinity.conf.databases.DBConstants;
-import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Cleaner;
 import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Employee;
-import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Manager;
-import com.milleniuminfinity.app.milleniuminfinity.domain.employee.SalesRepresentative;
 import com.milleniuminfinity.app.milleniuminfinity.repository.employee.EmployeeRepository;
 
 import java.util.HashSet;
@@ -30,6 +28,7 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_SURNAME = "surname";
     public static final String COLUMN_DATEOFBIRTH = "dateofbirth";
+    public static final String COLUMN_ROLE = "role";
 
     //Database table creation
     private static final String DATABASE_CREATE = " CREATE TABLE IF NOT EXISTS "
@@ -37,14 +36,23 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
             + COLUMN_EMPLOYEEID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_NAME + " TEXT NOT NULL,"
             + COLUMN_SURNAME + " TEXT NOT NULL,"
-            + COLUMN_DATEOFBIRTH + "TEXT NOT NULL);";
+            + COLUMN_DATEOFBIRTH + " TEXT NOT NULL,"
+            + COLUMN_ROLE + " TEXT NOT NULL);";
 
     public EmployeeRepositoryImpl(Context context)
     {
         super(context, DBConstants.DATABASE_NAME, null, DBConstants.DATABASE_VERSION);
     }
 
-    public void open() throws SQLException
+    public EmployeeRepositoryImpl(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, name, factory, version);
+    }
+
+    public EmployeeRepositoryImpl(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
+        super(context, name, factory, version, errorHandler);
+    }
+
+    public void open()
     {
         database = this.getWritableDatabase();
     }
@@ -58,13 +66,15 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
     public Employee findById(String employeeID, String role)
     {
         SQLiteDatabase database = this.getReadableDatabase();
+
         Cursor cursor = database.query(
                 TABLE_EMPLOYEE,
                 new String[]{
                         COLUMN_EMPLOYEEID,
                         COLUMN_NAME,
                         COLUMN_SURNAME,
-                        COLUMN_DATEOFBIRTH},
+                        COLUMN_DATEOFBIRTH,
+                        COLUMN_ROLE},
                 COLUMN_EMPLOYEEID + " =? ",
                 new String[]{String.valueOf(employeeID)},
                 null,
@@ -74,37 +84,14 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
 
         if(cursor.moveToFirst())
         {
-            if(role.equalsIgnoreCase("Manager")) {
-                final Employee employee = new Manager.Builder()
+                final Employee employee = new Employee.Builder()
                         .employeeID(cursor.getString(0))
                         .name(cursor.getString(1))
                         .surname(cursor.getString(2))
                         .dateOfBirth(cursor.getString(3))
+                        .role(cursor.getString(4))
                         .build();
                 return employee;
-            }
-            else if(role.equalsIgnoreCase("Sales representative"))
-            {
-                final Employee employee = new SalesRepresentative.Builder()
-                        .employeeID(cursor.getString(0))
-                        .name(cursor.getString(1))
-                        .surname(cursor.getString(2))
-                        .dateOfBirth(cursor.getString(3))
-                        .build();
-
-                return employee;
-            }
-            else
-            {
-                final Employee employee = new Cleaner.Builder()
-                        .employeeID(cursor.getString(0))
-                        .name(cursor.getString(1))
-                        .surname(cursor.getString(2))
-                        .dateOfBirth(cursor.getString(3))
-                        .build();
-
-                return employee;
-            }
         }
         else
         {
@@ -116,40 +103,23 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
     public Employee save(Employee employee)
     {
         open();
+        onCreate(database);
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_EMPLOYEEID, employee.getEmployeeID());
         values.put(COLUMN_NAME, employee.getName());
         values.put(COLUMN_SURNAME, employee.getSurname());
         values.put(COLUMN_DATEOFBIRTH, employee.getDateOfBirth());
+        values.put(COLUMN_ROLE, employee.getEmployeeRole());
 
         Long employeeID = database.insertOrThrow(TABLE_EMPLOYEE, null, values);
 
-        if(employee.getEmployeeRole().equalsIgnoreCase("Manager")) {
-            final Employee insertedEntity = new Manager.Builder()
-                    .copy((Manager)employee)
-                    .employeeID(employeeID.toString())
-                    .build();
-            return insertedEntity;
-        }
-        else if(employee.getEmployeeRole().equalsIgnoreCase("Sales representative"))
-        {
-            final Employee insertedEntity = new SalesRepresentative.Builder()
-                    .copy((SalesRepresentative)employee)
+            final Employee insertedEntity = new Employee.Builder()
+                    .copy(employee)
                     .employeeID(employeeID.toString())
                     .build();
 
-            return insertedEntity;
-        }
-        else
-        {
-            final Employee insertedEntity = new Cleaner.Builder()
-                    .copy((Cleaner)employee)
-                    .employeeID(employeeID.toString())
-                    .build();
-
-            return insertedEntity;
-        }
+        return insertedEntity;
     }
 
     @Override
@@ -162,6 +132,8 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
         values.put(COLUMN_NAME, employee.getName());
         values.put(COLUMN_SURNAME, employee.getSurname());
         values.put(COLUMN_DATEOFBIRTH, employee.getDateOfBirth());
+        values.put(COLUMN_ROLE, employee.getEmployeeRole());
+
         database.update(
                 TABLE_EMPLOYEE,
                 values,
@@ -188,44 +160,23 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
     @Override
     public Set<Employee> findAll()
     {
-        database = this.getReadableDatabase();
+        open();
         String selectAll = " SELECT * FROM " + TABLE_EMPLOYEE;
         Set<Employee> employees = new HashSet<>();
-        open();
+        //open();
         Cursor cursor = database.rawQuery(selectAll, null);
 
         if(cursor.moveToFirst())
         {
             do {
 
-                final Employee employee;
-
-                if(cursor.getString(4).equalsIgnoreCase("Manager")) {
-                    employee = new Manager.Builder()
+                final Employee employee = new Employee.Builder()
                             .employeeID(cursor.getString(0))
                             .name(cursor.getString(1))
                             .surname(cursor.getString(2))
                             .dateOfBirth(cursor.getString(3))
+                            .role(cursor.getString(4))
                             .build();
-                }
-                else if(cursor.getString(4).equalsIgnoreCase("Sales representative"))
-                {
-                    employee = new SalesRepresentative.Builder()
-                            .employeeID(cursor.getString(0))
-                            .name(cursor.getString(1))
-                            .surname(cursor.getString(2))
-                            .dateOfBirth(cursor.getString(3))
-                            .build();
-                }
-                else
-                {
-                    employee = new Cleaner.Builder()
-                            .employeeID(cursor.getString(0))
-                            .name(cursor.getString(1))
-                            .surname(cursor.getString(2))
-                            .dateOfBirth(cursor.getString(3))
-                            .build();
-                }
 
                 employees.add(employee);
 
@@ -247,6 +198,7 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
     @Override
     public void onCreate(SQLiteDatabase database)
     {
+        //database.execSQL("DROP TABLE IF EXISTS " + TABLE_EMPLOYEE);
         database.execSQL(DATABASE_CREATE);
     }
 

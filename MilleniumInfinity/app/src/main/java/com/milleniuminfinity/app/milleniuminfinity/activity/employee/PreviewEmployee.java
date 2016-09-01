@@ -8,11 +8,8 @@ import android.widget.TextView;
 
 import com.milleniuminfinity.app.milleniuminfinity.R;
 import com.milleniuminfinity.app.milleniuminfinity.activity.MainActivity;
-import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Cleaner;
 import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Employee;
-import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Manager;
-import com.milleniuminfinity.app.milleniuminfinity.domain.employee.SalesRepresentative;
-import com.milleniuminfinity.app.milleniuminfinity.repository.tables.CreateDatabase;
+import com.milleniuminfinity.app.milleniuminfinity.repository.employee.Impl.EmployeeRepositoryImpl;
 import com.milleniuminfinity.app.milleniuminfinity.services.employee.Impl.EmployeeServiceImpl;
 
 public class PreviewEmployee extends AppCompatActivity {
@@ -41,39 +38,21 @@ public class PreviewEmployee extends AppCompatActivity {
         role.setText(employee.getEmployeeRole());
     }
 
-    public void addToDatabase(View v) throws Exception
+    public void addToDatabase(View v)
     {
-        CreateDatabase createDatabase = CreateDatabase.getInstance(this.getApplicationContext());
-        createDatabase.createAllTables();
 
         EmployeeServiceImpl employeeService = EmployeeServiceImpl.getInstance();
+        EmployeeRepositoryImpl employeeRepository = new EmployeeRepositoryImpl(this.getApplicationContext());
 
-        if(role.equals("Manager")) {
-            Employee employee = new Manager.Builder()
+            Employee employee = new Employee.Builder()
                     .name(name.getText().toString())
                     .surname(surname.getText().toString())
                     .dateOfBirth(dateOfBirth.getText().toString())
                     .role(role.getText().toString())
                     .build();
-        }
-        else if(role.equals("Sales representative")){
-            Employee employee = new SalesRepresentative.Builder()
-                    .name(name.getText().toString())
-                    .surname(surname.getText().toString())
-                    .dateOfBirth(dateOfBirth.getText().toString())
-                    .role(role.getText().toString())
-                    .build();
-        }
-        else
-        {
-            Employee employee = new Cleaner.Builder()
-                    .name(name.getText().toString())
-                    .surname(surname.getText().toString())
-                    .dateOfBirth(dateOfBirth.getText().toString())
-                    .role(role.getText().toString())
-                    .build();
-        }
-        employeeService.addEmployee(this.getApplication(), employee);
+
+        //employeeService.addEmployee(this.getApplication(), employee);
+        employeeRepository.save(employee);
 
         Intent intent = new Intent(this, EmployeeMenu.class);
         startActivity(intent);

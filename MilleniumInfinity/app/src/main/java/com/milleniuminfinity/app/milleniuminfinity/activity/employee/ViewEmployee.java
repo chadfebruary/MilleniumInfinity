@@ -1,6 +1,7 @@
 package com.milleniuminfinity.app.milleniuminfinity.activity.employee;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,7 +14,6 @@ import com.milleniuminfinity.app.milleniuminfinity.activity.MainActivity;
 import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Employee;
 import com.milleniuminfinity.app.milleniuminfinity.repository.employee.EmployeeRepository;
 import com.milleniuminfinity.app.milleniuminfinity.repository.employee.Impl.EmployeeRepositoryImpl;
-import com.milleniuminfinity.app.milleniuminfinity.repository.tables.CreateDatabase;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -32,20 +32,10 @@ public class ViewEmployee extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_employee);
 
-        /*CreateDatabase createDatabase = new CreateDatabase(this.getApplicationContext());
-        createDatabase.createAllTables();
-*/
         EmployeeRepository employeeRepository = new EmployeeRepositoryImpl(this.getApplicationContext());
 
         employeeSet = new HashSet<>();
-        try
-        {
-            employeeSet = employeeRepository.findAll();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        employeeSet = employeeRepository.findAll();
 
         Iterator<Employee> employeeIterator = employeeSet.iterator();
 
@@ -56,7 +46,7 @@ public class ViewEmployee extends AppCompatActivity {
 
             while(employeeIterator.hasNext())
             {
-                names[i] = employeeIterator.next().getName();
+                names[i] = employeeIterator.next().toString();
                 i++;
             }
 

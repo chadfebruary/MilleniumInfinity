@@ -3,9 +3,7 @@ package com.milleniuminfinity.app.milleniuminfinity.repository.employee;
 import android.test.AndroidTestCase;
 
 import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Employee;
-import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Manager;
 import com.milleniuminfinity.app.milleniuminfinity.repository.employee.Impl.EmployeeRepositoryImpl;
-import com.milleniuminfinity.app.milleniuminfinity.repository.tables.CreateDatabase;
 
 import junit.framework.Assert;
 
@@ -32,7 +30,7 @@ public class EmployeeRepositoryTest extends AndroidTestCase
         EmployeeRepository employeeRepository = new EmployeeRepositoryImpl(this.getContext());
 
         //Create employee
-        Employee createEmployee = new Manager.Builder()
+        Employee createEmployee = new Employee.Builder()
                 .employeeID("1234")
                 .name("Chad")
                 .surname("February")
@@ -52,8 +50,8 @@ public class EmployeeRepositoryTest extends AndroidTestCase
         Assert.assertNotNull(employee);
 
         //Update employee
-        Employee updateEmployee = new Manager.Builder()
-                .copy((Manager) employee)
+        Employee updateEmployee = new Employee.Builder()
+                .copy(employee)
                 .surname("March")
                 .build();
         employeeRepository.update(updateEmployee);

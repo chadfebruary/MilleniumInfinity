@@ -1,9 +1,6 @@
 package com.milleniuminfinity.app.milleniuminfinity.factories.employee;
 
 
-import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Employee;
-import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Manager;
-
 import java.io.Serializable;
 
 /**
@@ -11,7 +8,7 @@ import java.io.Serializable;
  */
 public class ManagerFactory implements Serializable {
 
-    public static Employee getManager(String employeeId, String name, String surname, String dateOfBirth, String role) {
+    /*public static Employee getManager(String employeeId, String name, String surname, String dateOfBirth, String role) {
 
         Employee manager = new Manager.Builder()
                 .employeeID(employeeId)
@@ -22,5 +19,5 @@ public class ManagerFactory implements Serializable {
                 .build();
 
         return manager;
-    }
+    }*/
 }

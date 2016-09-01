@@ -1,9 +1,6 @@
 package com.milleniuminfinity.app.milleniuminfinity.factories.employee;
 
 
-import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Cleaner;
-import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Employee;
-
 import java.io.Serializable;
 
 /**
@@ -11,7 +8,7 @@ import java.io.Serializable;
  */
 public class CleanerFactory implements Serializable {
 
-    public static Employee getCleaner(String employeeID, String type, String name, String surname, String dateOfBirth) {
+    /*public static Employee getCleaner(String employeeID, String type, String name, String surname, String dateOfBirth) {
         Employee cleaner = new Cleaner.Builder()
                 .name(name)
                 .surname(surname)
@@ -20,5 +17,5 @@ public class CleanerFactory implements Serializable {
                 .build();
 
         return cleaner;
-    }
+    }*/
 }

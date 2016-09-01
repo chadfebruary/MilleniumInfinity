@@ -13,7 +13,7 @@ import junit.framework.Assert;
 
 public class ADSLTest extends AndroidTestCase
 {
-    public void testName() throws Exception {
+    /*public void testName() throws Exception {
         ADSL adsl = new ADSL.Builder()
                 .ipAddress("ipAddress")
                 .ISP("ISP")
@@ -27,6 +27,6 @@ public class ADSLTest extends AndroidTestCase
         Assert.assertEquals(adsl.getPlanName(), "PlanName");
         Assert.assertEquals(adsl.getPrice(), "Price");
         Assert.assertEquals(adsl.getDataAllowance(), "DataAllowance");
-    }
+    }*/
 
 }

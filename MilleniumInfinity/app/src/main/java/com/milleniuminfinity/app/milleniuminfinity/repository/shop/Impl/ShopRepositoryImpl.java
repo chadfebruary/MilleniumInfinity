@@ -85,7 +85,7 @@ public class ShopRepositoryImpl extends SQLiteOpenHelper implements ShopReposito
     }
 
     @Override
-    public Shop save(Shop shop) throws Exception {
+    public Shop save(Shop shop) {
         open();
         ContentValues values = new ContentValues();
 
@@ -101,7 +101,7 @@ public class ShopRepositoryImpl extends SQLiteOpenHelper implements ShopReposito
     }
 
     @Override
-    public Shop update(Shop shop) throws Exception {
+    public Shop update(Shop shop) {
         open();
         ContentValues values = new ContentValues();
 
@@ -121,7 +121,7 @@ public class ShopRepositoryImpl extends SQLiteOpenHelper implements ShopReposito
     }
 
     @Override
-    public Shop delete(Shop shop) throws Exception {
+    public Shop delete(Shop shop) {
         open();
         database.delete(
                 TABLE_SHOP,
@@ -133,7 +133,7 @@ public class ShopRepositoryImpl extends SQLiteOpenHelper implements ShopReposito
     }
 
     @Override
-    public int deleteAll() throws Exception {
+    public int deleteAll() {
         open();
         int rowsDeleted = database.delete(TABLE_SHOP, null, null);
         close();
@@ -141,7 +141,7 @@ public class ShopRepositoryImpl extends SQLiteOpenHelper implements ShopReposito
     }
 
     @Override
-    public Set<Shop> findAll() throws Exception {
+    public Set<Shop> findAll() {
         database = this.getReadableDatabase();
         String selectAll = " SELECT * FROM " + TABLE_SHOP;
         Set<Shop> shops = new HashSet<>();

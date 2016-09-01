@@ -1,9 +1,6 @@
 package com.milleniuminfinity.app.milleniuminfinity.factories.employee;
 
 
-import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Employee;
-import com.milleniuminfinity.app.milleniuminfinity.domain.employee.SalesRepresentative;
-
 import java.io.Serializable;
 
 /**
@@ -11,7 +8,7 @@ import java.io.Serializable;
  */
 public class SalesRepresentativeFactory implements Serializable {
 
-    public static Employee getSalesRepresentative(String employeeID, String type, String name, String surname, String dateOfBirth) {
+    /*public static Employee getSalesRepresentative(String employeeID, String type, String name, String surname, String dateOfBirth) {
         Employee salesRep = new SalesRepresentative.Builder()
                 .name(name)
                 .surname(surname)
@@ -20,5 +17,5 @@ public class SalesRepresentativeFactory implements Serializable {
                 .build();
 
         return salesRep;
-    }
+    }*/
 }

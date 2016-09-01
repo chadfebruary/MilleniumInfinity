@@ -12,7 +12,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add employee"
+        android:text="Add an employee"
         android:id="@+id/btnAddEmployee"
         android:onClick="addEmployee"
         android:layout_marginTop="40dp"
@@ -22,20 +22,28 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View employees"
+        android:text="View all employees"
         android:id="@+id/btnViewEmployees"
         android:onClick="viewEmployees"
-        android:layout_marginTop="40dp"
-        android:layout_below="@+id/btnAddEmployee"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete employee"
+        android:text="Delete all employees"
         android:id="@+id/btnDeleteEmployee"
         android:onClick="deleteEmployees"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/btnViewEmployees"
-        android:layout_alignStart="@+id/btnViewEmployees" />
+        android:layout_below="@+id/btnViewEmployees"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update an employee"
+        android:id="@+id/btnUpdateEmployee"
+        android:layout_above="@+id/btnViewEmployees"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="39dp" />
 </RelativeLayout>

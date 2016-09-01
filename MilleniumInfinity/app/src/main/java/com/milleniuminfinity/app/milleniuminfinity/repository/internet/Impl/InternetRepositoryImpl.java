@@ -5,14 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.test.AndroidTestCase;
 import android.util.Log;
 
 import com.milleniuminfinity.app.milleniuminfinity.conf.databases.DBConstants;
-import com.milleniuminfinity.app.milleniuminfinity.domain.internet.ADSL;
-import com.milleniuminfinity.app.milleniuminfinity.domain.internet.Fibre;
 import com.milleniuminfinity.app.milleniuminfinity.domain.internet.Internet;
-import com.milleniuminfinity.app.milleniuminfinity.domain.internet.Mobile;
 import com.milleniuminfinity.app.milleniuminfinity.repository.internet.InternetRepository;
 
 import java.util.HashSet;
@@ -36,7 +32,7 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
     //Database table creation
     private static final String DATABASE_CREATE = " CREATE TABLE IF NOT EXISTS "
             + TABLE_INTERNET + "("
-            + COLUMN_IPADDRESS + " TEXT PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_IPADDRESS + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_ISP + " TEXT NOT NULL,"
             + COLUMN_PLANNAME + " TEXT NOT NULL,"
             + COLUMN_PRICE + " TEXT NOT NULL,"
@@ -81,8 +77,7 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
 
         if(cursor.moveToFirst())
         {
-            if(type.equalsIgnoreCase("ADSL")){
-                final Internet internet = new ADSL.Builder()
+                final Internet internet = new Internet.Builder()
                         .ipAddress(cursor.getString(0))
                         .ISP(cursor.getString(1))
                         .planName(cursor.getString(2))
@@ -92,32 +87,6 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
                         .build();
 
                 return internet;
-            }
-            else if(type.equalsIgnoreCase("Fibre")){
-                final Internet internet = new Fibre.Builder()
-                        .ipAddress(cursor.getString(0))
-                        .ISP(cursor.getString(1))
-                        .planName(cursor.getString(2))
-                        .price(cursor.getString(3))
-                        .dataAllowance(cursor.getString(4))
-                        .type(cursor.getString(5))
-                        .build();
-
-                return internet;
-            }
-            else{
-                final Internet internet = new Mobile.Builder()
-                        .ipAddress(cursor.getString(0))
-                        .ISP(cursor.getString(1))
-                        .planName(cursor.getString(2))
-                        .price(cursor.getString(3))
-                        .dataAllowance(cursor.getString(4))
-                        .type(cursor.getString(5))
-                        .build();
-
-                return internet;
-            }
-
         }
         else {
             return null;
@@ -125,8 +94,9 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
     }
 
     @Override
-    public Internet save(Internet internet) throws Exception {
+    public Internet save(Internet internet) {
         open();
+        onCreate(database);
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_IPADDRESS, internet.getIPAddress());
@@ -138,13 +108,16 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
 
         Long ipAddress = database.insertOrThrow(TABLE_INTERNET, null, values);
 
-        Internet insertedEntity = internet;
+        final Internet insertedEntity = new Internet.Builder()
+                .copy(internet)
+                .ipAddress(ipAddress.toString())
+                .build();
 
         return insertedEntity;
     }
 
     @Override
-    public Internet update(Internet internet) throws Exception {
+    public Internet update(Internet internet) {
         open();
         ContentValues values = new ContentValues();
 
@@ -165,7 +138,7 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
     }
 
     @Override
-    public Internet delete(Internet internet) throws Exception {
+    public Internet delete(Internet internet){
         open();
         database.delete(
                 TABLE_INTERNET,
@@ -177,7 +150,7 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
     }
 
     @Override
-    public int deleteAll() throws Exception {
+    public int deleteAll() {
         open();
         int rowsDeleted = database.delete(TABLE_INTERNET, null, null);
         close();
@@ -185,7 +158,7 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
     }
 
     @Override
-    public Set<Internet> findAll() throws Exception {
+    public Set<Internet> findAll() {
         database = this.getReadableDatabase();
         String selectAll = " SELECT * FROM " + TABLE_INTERNET;
         Set<Internet>internetServices = new HashSet<>();
@@ -195,10 +168,7 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
         if(cursor.moveToFirst())
         {
             do{
-                final Internet internet;
-
-                if(cursor.getString(5).equalsIgnoreCase("ADSL")){
-                    internet = new ADSL.Builder()
+                final Internet internet = new Internet.Builder()
                             .ipAddress(cursor.getString(0))
                             .ISP(cursor.getString(1))
                             .planName(cursor.getString(2))
@@ -206,27 +176,6 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
                             .dataAllowance(cursor.getString(4))
                             .type(cursor.getString(5))
                             .build();
-                }
-                else if(cursor.getString(5).equalsIgnoreCase("Fibre")){
-                    internet = new Fibre.Builder()
-                            .ipAddress(cursor.getString(0))
-                            .ISP(cursor.getString(1))
-                            .planName(cursor.getString(2))
-                            .price(cursor.getString(3))
-                            .dataAllowance(cursor.getString(4))
-                            .type(cursor.getString(5))
-                            .build();
-                }
-                else{
-                    internet = new Mobile.Builder()
-                            .ipAddress(cursor.getString(0))
-                            .ISP(cursor.getString(1))
-                            .planName(cursor.getString(2))
-                            .price(cursor.getString(3))
-                            .dataAllowance(cursor.getString(4))
-                            .type(cursor.getString(5))
-                            .build();
-                }
 
                 internetServices.add(internet);
 
@@ -237,7 +186,9 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+    public void onCreate(SQLiteDatabase sqLiteDatabase)
+    {
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_INTERNET);
         database.execSQL(DATABASE_CREATE);
     }
 

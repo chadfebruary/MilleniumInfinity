@@ -9,7 +9,6 @@ import android.widget.EditText;
 import com.milleniuminfinity.app.milleniuminfinity.R;
 import com.milleniuminfinity.app.milleniuminfinity.activity.MainActivity;
 import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Employee;
-import com.milleniuminfinity.app.milleniuminfinity.factories.employee.ManagerFactory;
 
 import java.io.Serializable;
 
@@ -36,9 +35,14 @@ public class AddEmployee extends AppCompatActivity {
         String dateOfBirth = ((EditText)findViewById(R.id.editText3)).getText().toString();
         String role = ((EditText)findViewById(R.id.editText4)).getText().toString();
 
-        Employee employee = ManagerFactory.getManager(null, name, surname, dateOfBirth, role);
+        Employee employee = new Employee.Builder()
+                .name(name)
+                .surname(surname)
+                .dateOfBirth(dateOfBirth)
+                .role(role)
+                .build();
 
-        intent.putExtra("EMPLOYEE", (Serializable) employee);
+        intent.putExtra("EMPLOYEE", employee);
 
         startActivity(intent);
     }

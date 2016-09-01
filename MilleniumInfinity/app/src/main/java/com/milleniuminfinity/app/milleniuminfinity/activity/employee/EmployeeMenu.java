@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.milleniuminfinity.app.milleniuminfinity.R;
+import com.milleniuminfinity.app.milleniuminfinity.repository.employee.Impl.EmployeeRepositoryImpl;
 import com.milleniuminfinity.app.milleniuminfinity.services.employee.EmployeeService;
 import com.milleniuminfinity.app.milleniuminfinity.services.employee.Impl.EmployeeServiceImpl;
 
@@ -28,7 +29,10 @@ public class EmployeeMenu extends AppCompatActivity {
     }
 
     public void deleteEmployees(View v){
-        EmployeeServiceImpl employeeService = EmployeeServiceImpl.getInstance();
-        employeeService.deleteAll();
+        //EmployeeServiceImpl employeeService = EmployeeServiceImpl.getInstance();
+        //employeeService.deleteAll();
+
+        EmployeeRepositoryImpl employeeRepository = new EmployeeRepositoryImpl(this.getApplicationContext());
+        employeeRepository.deleteAll();
     }
 }
