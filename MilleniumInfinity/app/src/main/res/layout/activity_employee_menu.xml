@@ -31,7 +31,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete all employees"
+        android:text="Delete employees"
         android:id="@+id/btnDeleteEmployee"
         android:onClick="deleteEmployees"
         android:layout_below="@+id/btnViewEmployees"
@@ -43,6 +43,7 @@
         android:layout_height="wrap_content"
         android:text="Update an employee"
         android:id="@+id/btnUpdateEmployee"
+        android:onClick="updateEmployee"
         android:layout_above="@+id/btnViewEmployees"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="39dp" />

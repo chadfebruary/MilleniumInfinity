@@ -38,6 +38,50 @@ public class EmployeeServiceImpl extends IntentService implements EmployeeServic
     }
 
     @Override
+    protected void onHandleIntent(Intent intent)
+    {
+        if(intent != null) {
+            final String action = intent.getAction();
+
+            if (ACTION_ADD.equals(action)) {
+                final Employee employee = (Employee) intent.getSerializableExtra(EXTRA_ADD);
+                    saveEmployee(employee);
+            } else if (ACTION_UPDATE.equals(action)) {
+                final Employee employee = (Employee) intent.getSerializableExtra(EXTRA_UPDATE);
+                updateEmployee(employee);
+            }
+        }
+    }
+
+    private void updateEmployee(Employee employee)
+    {
+        //Post and Save local
+        EmployeeRepository employeeRepository = new EmployeeRepositoryImpl(getBaseContext());
+        employeeRepository.update(employee);
+    }
+
+    private void saveEmployee(Employee employee)
+    {
+        //Post and Save local
+        EmployeeRepository employeeRepository = new EmployeeRepositoryImpl(getBaseContext());
+        employeeRepository.save(employee);
+    }
+
+    public void deleteAll()
+    {
+        EmployeeRepository employeeRepository = new EmployeeRepositoryImpl(getBaseContext());
+
+        try
+        {
+            employeeRepository.deleteAll();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void addEmployee(Context context, Employee employee)
     {
         Intent intent = new Intent(context, EmployeeServiceImpl.class);
@@ -56,52 +100,8 @@ public class EmployeeServiceImpl extends IntentService implements EmployeeServic
     }
 
     @Override
-    protected void onHandleIntent(Intent intent)
+    public void deleteEmployee(Context context, Employee employee)
     {
-        if(intent != null) {
-            final String action = intent.getAction();
 
-            if (ACTION_ADD.equals(action)) {
-                final Employee employee = (Employee) intent.getSerializableExtra(EXTRA_ADD);
-                    saveEmp(employee);
-            } else if (ACTION_UPDATE.equals(action)) {
-                final Employee employee = (Employee) intent.getSerializableExtra(EXTRA_UPDATE);
-                updateEmp(employee);
-            }
-        }
-    }
-
-    private void updateEmp(Employee employee)
-    {
-        //Post and Save local
-        EmployeeRepository employeeRepository = new EmployeeRepositoryImpl(getBaseContext());
-
-        try
-        {
-            employeeRepository.update(employee);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void saveEmp(Employee employee){
-        //Post and Save local
-        EmployeeRepository employeeRepository = new EmployeeRepositoryImpl(getBaseContext());
-        employeeRepository.save(employee);
-    }
-
-    public void deleteAll()
-    {
-        EmployeeRepository employeeRepository = new EmployeeRepositoryImpl(getBaseContext());
-
-        try
-        {
-            employeeRepository.deleteAll();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 }

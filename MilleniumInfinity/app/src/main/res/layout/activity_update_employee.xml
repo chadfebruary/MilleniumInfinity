@@ -7,33 +7,15 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activity.employee.AddEmployee">
+    tools:context=".activity.employee.UpdateEmployee">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home"
-        android:id="@+id/btnHome"
-        android:onClick="returnHome"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="49dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Preview"
-        android:onClick="previewEmployee"
-        android:id="@+id/buttonPreviewEmployee"
-        android:layout_above="@+id/btnHome"
-        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Add an employee"
-        android:id="@+id/textView"
+        android:text="Edit by ID"
+        android:id="@+id/textView22"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -43,9 +25,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Employee ID:"
+        android:id="@+id/textView23"
+        android:layout_below="@+id/textView22"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Name:"
-        android:id="@+id/textView28"
-        android:layout_below="@+id/textView"
+        android:id="@+id/textView24"
+        android:layout_below="@+id/textView23"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="30dp" />
@@ -55,8 +48,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Surname:"
-        android:id="@+id/textView29"
-        android:layout_below="@+id/textView28"
+        android:id="@+id/textView25"
+        android:layout_below="@+id/textView24"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="30dp" />
@@ -66,8 +59,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Date of birth:"
-        android:id="@+id/textView30"
-        android:layout_below="@+id/textView29"
+        android:id="@+id/textView26"
+        android:layout_below="@+id/textView25"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="30dp" />
@@ -77,8 +70,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Role:"
-        android:id="@+id/textView31"
-        android:layout_below="@+id/textView30"
+        android:id="@+id/textView27"
+        android:layout_below="@+id/textView26"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="30dp" />
@@ -86,42 +79,61 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:ems="10"
-        android:id="@+id/editText1"
-        android:layout_above="@+id/textView29"
-        android:layout_toRightOf="@+id/textView30"
-        android:layout_toEndOf="@+id/textView30" />
+        android:id="@+id/editText7"
+        android:layout_alignBottom="@+id/textView23"
+        android:layout_toRightOf="@+id/textView23"
+        android:layout_toEndOf="@+id/textView23" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/editText2"
-        android:layout_alignBottom="@+id/textView29"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_alignStart="@+id/editText1" />
+        android:id="@+id/editText8"
+        android:layout_above="@+id/textView25"
+        android:layout_toRightOf="@+id/textView23"
+        android:layout_toEndOf="@+id/textView23" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText9"
+        android:layout_above="@+id/textView26"
+        android:layout_alignLeft="@+id/editText8"
+        android:layout_alignStart="@+id/editText8" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="date"
         android:ems="10"
-        android:id="@+id/editText3"
-        android:layout_alignBottom="@+id/textView30"
-        android:layout_toRightOf="@+id/textView30"
-        android:layout_alignRight="@+id/editText2"
-        android:layout_alignEnd="@+id/editText2" />
+        android:id="@+id/editText10"
+        android:layout_above="@+id/textView27"
+        android:layout_toRightOf="@+id/textView26"
+        android:layout_toEndOf="@+id/textView26" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/editText4"
-        android:layout_alignBottom="@+id/textView31"
-        android:layout_toRightOf="@+id/textView30"
-        android:layout_toEndOf="@+id/textView30" />
+        android:id="@+id/editText11"
+        android:layout_alignBottom="@+id/textView27"
+        android:layout_toRightOf="@+id/textView26"
+        android:layout_toEndOf="@+id/textView26" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:id="@+id/button9"
+        android:onClick="updateEmployee"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textView27"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -1,16 +1,14 @@
 package com.milleniuminfinity.app.milleniuminfinity.activity.employee;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
 import com.milleniuminfinity.app.milleniuminfinity.R;
 import com.milleniuminfinity.app.milleniuminfinity.activity.MainActivity;
 import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Employee;
-
-import java.io.Serializable;
 
 public class AddEmployee extends AppCompatActivity {
 

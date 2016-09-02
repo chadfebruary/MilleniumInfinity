@@ -1,8 +1,8 @@
 package com.milleniuminfinity.app.milleniuminfinity.activity.employee;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,7 +12,7 @@ import com.milleniuminfinity.app.milleniuminfinity.domain.employee.Employee;
 import com.milleniuminfinity.app.milleniuminfinity.repository.employee.Impl.EmployeeRepositoryImpl;
 import com.milleniuminfinity.app.milleniuminfinity.services.employee.Impl.EmployeeServiceImpl;
 
-public class PreviewEmployee extends AppCompatActivity {
+public class PreviewEmployee extends AppCompatActivity{
 
     Employee employee;
     TextView name, surname, dateOfBirth, role;
@@ -51,7 +51,7 @@ public class PreviewEmployee extends AppCompatActivity {
                     .role(role.getText().toString())
                     .build();
 
-        //employeeService.addEmployee(this.getApplication(), employee);
+        //employeeService.addEmployee(getBaseContext(), employee);
         employeeRepository.save(employee);
 
         Intent intent = new Intent(this, EmployeeMenu.class);
@@ -63,4 +63,5 @@ public class PreviewEmployee extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
 }

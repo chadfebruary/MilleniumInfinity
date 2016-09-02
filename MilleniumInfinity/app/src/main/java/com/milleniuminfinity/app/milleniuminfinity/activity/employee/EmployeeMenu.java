@@ -1,14 +1,11 @@
 package com.milleniuminfinity.app.milleniuminfinity.activity.employee;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.milleniuminfinity.app.milleniuminfinity.R;
-import com.milleniuminfinity.app.milleniuminfinity.repository.employee.Impl.EmployeeRepositoryImpl;
-import com.milleniuminfinity.app.milleniuminfinity.services.employee.EmployeeService;
-import com.milleniuminfinity.app.milleniuminfinity.services.employee.Impl.EmployeeServiceImpl;
 
 public class EmployeeMenu extends AppCompatActivity {
 
@@ -29,10 +26,18 @@ public class EmployeeMenu extends AppCompatActivity {
     }
 
     public void deleteEmployees(View v){
+
+        Intent intent = new Intent(this, DeleteEmployee.class);
+        startActivity(intent);
         //EmployeeServiceImpl employeeService = EmployeeServiceImpl.getInstance();
         //employeeService.deleteAll();
 
-        EmployeeRepositoryImpl employeeRepository = new EmployeeRepositoryImpl(this.getApplicationContext());
-        employeeRepository.deleteAll();
+
+    }
+
+    public void updateEmployee(View v)
+    {
+        Intent intent = new Intent(this, UpdateEmployee.class);
+        startActivity(intent);
     }
 }
